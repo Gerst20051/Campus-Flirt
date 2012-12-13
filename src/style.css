@@ -43,6 +43,15 @@ padding:14px;
 text-align:center;
 }
 
+#nav .link:hover {
+background-color:#6d664a;
+text-decoration:none;
+}
+
+#nav .link:active {
+background-color:#7c7455;
+}
+
 #nav .post-link { margin-left:10px; width:60px; }
 #nav .myposts-link { width:80px; }
 #nav .messages-link { width:80px; }
