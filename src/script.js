@@ -151,6 +151,7 @@ onKeyDown: function(e){
 		if (keyCode == keys.ENTER) {
 			if (this.loginFocus) this.login();
 			else if (this.registerFocus) this.register();
+			e.preventDefault();
 		}
 	}
 },
