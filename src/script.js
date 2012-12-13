@@ -20,10 +20,27 @@ loaded: false,
 logged: false,
 loginFocus: false,
 registerFocus: false,
+currentPanel: "",
+moreUpdates: false, // change to true
+panels: ['post','myposts','messages','campusfeed','browse'],
 user: {},
+setPanel: function(id){
+	if (id === this.currentPanel) return;
+	if (-1 < $.inArray(id, this.panels)) {
+		this.currentPanel = id;
+		Hash.set("panel", id);
+		$("#nav").find(".selected").removeClass("selected").end().find("."+id+"-link").addClass("selected");
+		$("#panelcontent").children().hide().end().find("#"+id+"-panel").show();
+	}
+},
 handleHash: function(){
-	if (Hash.getHash().length > 0) {
+	if (0 < Hash.getHash().length) {
 		Hash.parse();
+		if (this.logged === true) {
+			if (Hash.has("panel")) {
+				this.setPanel(Hash.get("panel"));
+			}
+		}
 	}
 },
 init: function(){
@@ -31,15 +48,17 @@ init: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"logged"}, function(response){
 		self.loaded = true;
-		if (response.logged === true) self.logged = true;
-		if (self.logged === true) self.loggedIn(); else self.loggedOut();
+		if (response.logged === true) {
+			self.logged = true;
+			self.loggedIn();
+		} else self.loggedOut();
+		self.handleHash();
 	});
-	this.handleHash();
 	this.dom();
 },
 loggedIn: function(){
+	if (this.logged !== true) return;
 	var self = this;
-	if (this.logged === false) return;
 	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
 		if (response.user !== false) {
 			self.user = response.user;
@@ -49,10 +68,13 @@ loggedIn: function(){
 			$("#loggedout").hide();
 			$("body").addClass("in").removeClass("out");
 			$(".campusheading").text(response.user.campus);
+			self.handleHash();
+			if (self.currentPanel === "") self.setPanel("campusfeed");
 		} else aC.logout();
 	});
 },
 loggedOut: function(){
+	if (this.logged !== false) return;
 	$("#loggedout").show();
 	$("#loggedin").hide();
 	$("body").addClass("out").removeClass("in");
@@ -91,6 +113,7 @@ logout: function(){
 			self.logged = false;
 			self.user = {};
 			self.loggedOut();
+			Hash.clear();
 		}
 	});
 },
@@ -159,6 +182,13 @@ onKeyDown: function(e){
 		}
 	}
 },
+onWindowScroll: function(){
+	if (this.moreUpdates) {
+		if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+			// load more updates when campus feed or browse is active
+		}
+	}
+},
 dom: function(){
 	var self = this;
 	$("#lemail, #lpassword").live('focus',function(){
@@ -188,12 +218,28 @@ dom: function(){
 		$("#login").show();
 		$("#register").hide();
 	});
+	$(".post-link").live('click',function(){
+		self.setPanel('post');
+	});
+	$(".myposts-link").live('click',function(){
+		self.setPanel('myposts');
+	});
+	$(".messages-link").live('click',function(){
+		self.setPanel('messages');
+	});
+	$(".campusfeed-link").live('click',function(){
+		self.setPanel('campusfeed');
+	});
+	$(".browse-link").live('click',function(){
+		self.setPanel('browse');
+	});
 	$(".logout-link").live('click',function(){
 		self.logout();
 	});
 }
 };
 
+$(window).scroll(function(){window.aC.onWindowScroll()});
 $(document.documentElement).keydown(function(e){window.aC.onKeyDown(e)});
 $(document).ready(function(){window.aC.init()});
 

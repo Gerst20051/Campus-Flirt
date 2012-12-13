@@ -106,7 +106,7 @@ window.Hash = {
 	clearHash: function(){window.location.replace("#")},
 	setHash: function(hash){window.location.replace("#"+encodeURI(hash))},
 	get: function(key){
-		if (this.exists(key)) {
+		if (this.has(key)) {
 			return this.query[key];
 		}
 	},
@@ -121,7 +121,7 @@ window.Hash = {
 			return value;
 		}
 	},
-	exists: function(key) {
+	has: function(key) {
 		return this.query[key] != null;
 	},
 	parse: function(){

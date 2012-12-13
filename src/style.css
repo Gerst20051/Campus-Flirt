@@ -45,11 +45,12 @@ color:#fff;
 display:inline-block;
 padding:14px;
 text-align:center;
+text-decoration:none;
 }
 
+#nav .link.selected,
 #nav .link:hover {
 background-color:#6d664a;
-text-decoration:none;
 }
 
 #nav .link:active {
