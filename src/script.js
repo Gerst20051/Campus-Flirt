@@ -67,13 +67,15 @@ login: function(){
 			output[n.name] = $.trim($(n).val());
 		});
 		$.post(this.ajaxurl, {action:"login",form:output}, function(response){
+			$("#f_login").find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.logged)) {
 				$("#b_login_splash").removeClass('error');
+				$("#f_login").clearForm();
 				self.logged = true;
 				self.loggedIn();
 			} else {
-				$("#f_login").find("input,select").attr('disabled',false);
 				$("#b_login_splash").addClass('error');
+				$("#lpassword").val('');
 			}
 		});
 	}
@@ -123,6 +125,7 @@ register: function(){
 	$.post(aC.ajaxurl, {action:"register",form:output}, function(response){
 		if (stringToBoolean(response.registered)) {
 			$("#b_register").removeClass('error');
+			$("#f_register").clearForm();
 			self.registered();
 		} else {
 			$("#f_register").find("input,select").attr('disabled',false);
@@ -146,14 +149,14 @@ onKeyDown: function(e){
 	var keyCode = e.which;
 	if (this.logged === false) {
 		if (keyCode == keys.ENTER) {
-			if (this.loginFocus) $("#b_login_splash").click();
-			else if (this.registerFocus) $("#b_register").click();
+			if (this.loginFocus) this.login();
+			else if (this.registerFocus) this.register();
 		}
 	}
 },
 dom: function(){
 	var self = this;
-	$("#lusername, #lpassword").live('focus',function(){
+	$("#lemail, #lpassword").live('focus',function(){
 		self.loginFocus = true;
 	}).live('blur',function(){
 		self.loginFocus = false;

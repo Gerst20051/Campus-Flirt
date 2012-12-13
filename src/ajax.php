@@ -42,7 +42,7 @@ if ($ACTION == 'login') {
 			$_SESSION['lastname'] = $row['lastname'];
 			$last_login = date('Y-m-d');
 			$logins = $row['logins']+1;
-			$db->sfquery(array('UPDATE `%s` SET last_login = "%s", logins = "%s" WHERE user_id = %s','login',$last_login,$logins,$_SESSION['user_id']));
+			$db->sfquery(array('UPDATE `%s` SET last_login = "%s", logins = "%s" WHERE user_id = %s','campusflirt_login',$last_login,$logins,$_SESSION['user_id']));
 			print_json(array('logged'=>true));
 		} else print_json(array('logged'=>false));
 	} catch(Exception $e) {
