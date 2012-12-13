@@ -40,6 +40,7 @@ if ($ACTION == 'login') {
 			$_SESSION['firstname'] = $row['firstname'];
 			if (varcheck($row['middlename'],true)) $_SESSION['middlename'] = $row['middlename'];
 			$_SESSION['lastname'] = $row['lastname'];
+			$_SESSION['gender'] = $row['gender'];
 			$last_login = date('Y-m-d');
 			$logins = $row['logins']+1;
 			$db->sfquery(array('UPDATE `%s` SET last_login = "%s", logins = "%s" WHERE user_id = %s','campusflirt_login',$last_login,$logins,$_SESSION['user_id']));
@@ -80,7 +81,8 @@ if ($ACTION == 'login') {
 				'lastname'=>$lastname,
 				'gender'=>$gender
 			));
-			$user_id=1;
+			$owner_id=1;
+			$ownergender="Male";
 			$alias="myalias";
 			$location="UL";
 			$timespotted=mktime(4, 30, 0, 12, 11, 2012);
@@ -88,7 +90,8 @@ if ($ACTION == 'login') {
 			$message="You have your hoodie on in the UL Basement. Take it off and talk to me.";
 			$timestamp=mktime(4, 35, 0, 12, 11, 2012);
 			$db->insert('campusflirt_posts', array(
-				'owner_id'=>$user_id,
+				'owner_id'=>$owner_id,
+				'ownergender'=>$ownergender,
 				'campus'=>$campus,
 				'alias'=>$alias,
 				'location'=>$location,
