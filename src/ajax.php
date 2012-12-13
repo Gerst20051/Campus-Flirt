@@ -104,12 +104,14 @@ if ($ACTION == 'login') {
 			$flirt_id=1;
 			$receiver_id=2;
 			$sender_id=1;
+			$senderalias="mysendalias";
 			$privatemessage="hey i think you're cute too!";
 			$timesent=mktime(4, 40, 0, 12, 11, 2012);
 			$db->insert('campusflirt_messages', array(
 				'flirt_id'=>$flirt_id,
 				'receiver_id'=>$receiver_id,
 				'sender_id'=>$sender_id,
+				'senderalias'=>$senderalias,
 				'privatemessage'=>$privatemessage,
 				'timesent'=>$timesent
 			));
