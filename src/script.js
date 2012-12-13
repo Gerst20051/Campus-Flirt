@@ -71,7 +71,9 @@ login: function(){
 		$.post(this.ajaxurl, {action:"login",form:output}, function(response){
 			$("#f_login").find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.logged)) {
+				$("#reg_name, #reg_email, #reg_password").removeClass('error');
 				$("#b_login_splash").removeClass('error');
+				$("#f_register").clearForm();
 				$("#f_login").clearForm();
 				self.logged = true;
 				self.loggedIn();
