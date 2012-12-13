@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en" dir="ltr"><head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>HnS Campus Flirt</title>
+<meta name="description" content="HnS Campus Flirt. Students Anonymously Flirting!">
+<link href="favicon.ico" rel="icon" type="image/x-icon">
+<script src="init.js"></script>
+</head>
+<body>
+<div id="main">
+<header><span class="leftheading">campus</span><span class="rightheading">flirt</span></header>
+<article class="cf">
+<div id="loggedin">
+<header id="nav">
+<nav>
+<span class="post-link link">post &#187;</span><span class="myposts-link link">my posts</span><span class="messages-link link">messages</span><span class="campusfeed-link link">campus feed</span><span class="browse-link link">browse</span><span class="logout-link link">logout</span>
+</nav>
+</header>
+<div class="content cf">
+<div id="post-panel" class="panel">
+<div class="input-append date" id="dp1" data-date="2012-02-12" data-date-format="yyyy-mm-dd">
+<input name="date" id="duedate" class="span2" size="16" type="text" value="2012-02-12" readonly="">
+<span class="add-on"><i class="icon-calendar"></i></span>
+</div>
+</div>
+<div id="myposts-panel" class="panel">
+My Posts
+</div>
+<div id="messages-panel" class="panel">
+Messages
+</div>
+<div id="campusfeed-panel" class="panel">
+Campus Feed
+</div>
+<div id="browse-panel" class="panel">
+Browse
+</div>
+</div>
+</div>
+<div id="loggedout">
+<div class="content cf">
+<div id="authpanel">
+<div id="login">
+<header>Login</header>
+<form id="f_login" onsubmit="return false" autocomplete="off">
+<input type="hidden" name="formname" value="login"/>
+<div><label for="lemail">Email (.edu):</label><input id="lemail" name="email" type="text" spellcheck="false" value=""/></div>
+<div><label for="lpassword">Password:</label><input id="lpassword" name="password" type="password" spellcheck="false" value=""/></div>
+<div class="buttonTools">
+<ul class="toolList rfloat">
+<li class="listItem"><label class="loginButton" for="b_login_splash"><input id="b_login_splash" value="Login" type="submit"/></label></li>
+<li class="listItem"><label class="registerButton" for="b_register_splash"><input id="b_register_splash" value="Register" type="button"/></label></li>
+</ul>
+</div>
+</form>
+</div>
+<div id="register">
+<header>Register</header>
+<form id="f_register" onsubmit="return false" autocomplete="off">
+<input type="hidden" name="formname" value="register"/>
+<div><label for="reg_name">Name (private):</label><input id="reg_name" name="name" type="text" spellcheck="false" value=""/></div>
+<div><label for="reg_email">Email (.edu):</label><input id="reg_email" name="email" type="email" spellcheck="false" value=""/></div>
+<div><label for="reg_password">Password:</label><input id="reg_password" name="password" type="password" spellcheck="false" value=""/></div>
+<div>
+<label for="reg_gender">Gender:</label>
+<select id="reg_gender" name="gender">
+<option value="0"></option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select>
+</div>
+<div class="buttonTools">
+<ul class="toolList lfloat">
+<li class="listItem"><label class="loginButton" for="b_login"><input id="b_login" value="Login" type="submit"/></label></li>
+<li class="listItem"><label class="registerButton" for="b_register"><input id="b_register" value="Register" type="submit"/></label></li>
+</ul>
+</div>
+</form>
+</div>
+</div>
+<div id="previewfeed">
+Text Here!
+</div>
+</div>
+</div>
+</article>
+<footer>Homenet Spaces</footer>
+</div>
+</body>
+</html>

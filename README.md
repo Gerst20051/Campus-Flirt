@@ -1,4 +1,4 @@
-HnS-CampusFlirt
+HnS Campus Flirt
 ===============
 
 HnS Campus Flirt. Students Anonymously Flirting!
