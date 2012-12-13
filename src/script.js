@@ -45,16 +45,18 @@ loggedIn: function(){
 			self.user = response.user;
 			if (self.user.middlename != "") self.user.fullname = self.user.firstname+' '+self.user.middlename+' '+self.user.lastname;
 			else self.user.fullname = self.user.firstname+' '+self.user.lastname;
+			$("#loggedin").show();
+			$("#loggedout").hide();
+			$("body").addClass("in").removeClass("out");
+			$(".campusheading").text(response.user.campus);
 		} else aC.logout();
 	});
-	$("#loggedin").show();
-	$("#loggedout").hide();
-	$("body").addClass("in").removeClass("out");
 },
 loggedOut: function(){
 	$("#loggedout").show();
 	$("#loggedin").hide();
 	$("body").addClass("out").removeClass("in");
+	$(".campusheading").empty();
 },
 login: function(){
 	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
@@ -123,12 +125,12 @@ register: function(){
 		output[n.name] = $.trim($(n).val());
 	});
 	$.post(aC.ajaxurl, {action:"register",form:output}, function(response){
+		$("#f_register").find("input,select").attr('disabled',false);
 		if (stringToBoolean(response.registered)) {
 			$("#b_register").removeClass('error');
 			$("#f_register").clearForm();
 			self.registered();
 		} else {
-			$("#f_register").find("input,select").attr('disabled',false);
 			$("#b_register").addClass('error');
 		}
 	});

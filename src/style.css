@@ -24,6 +24,10 @@ font-weight:bold;
 margin:20px 0;
 }
 
+#main > header .campusheading {
+color:#665f46;
+}
+
 #main > header .leftheading {
 color:#a39c82;
 }
@@ -52,7 +56,7 @@ text-decoration:none;
 background-color:#7c7455;
 }
 
-#nav .post-link { margin-left:10px; width:60px; }
+#nav .post-link { margin-left:9px; width:60px; }
 #nav .myposts-link { width:80px; }
 #nav .messages-link { width:80px; }
 #nav .campusfeed-link { width:104px; }
