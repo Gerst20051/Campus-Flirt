@@ -17,34 +17,134 @@
 </header>
 <div id="panelcontent" class="content cf">
 <div id="post-panel" class="panel">
+<header>post flirt</header>
+<div class="contentbody">
+<div id="postflirt_container">
+<form id="f_postflirt" class="coolform" onsubmit="return false" autocomplete="off">
+<div class="formcontainer">
+<input type="hidden" name="formname" value="postflirt"/>
+<div><label for="postflirt_alias">alias:</label><input id="postflirt_alias" name="alias" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_location">location:</label><input id="postflirt_location" name="location" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_time">time:</label><input id="postflirt_time" name="time" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_date">date:</label><input id="postflirt_date" name="date" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_gender">gender:</label><input id="postflirt_gender" name="gender" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_message">message:</label><input id="postflirt_message" name="message" type="text" spellcheck="false" value=""/></div>
+</div>
+<div class="buttonTools">
+<ul class="toolList rfloat">
+<li class="listItem"><label class="postflirtButton" for="b_postflirt"><input id="b_postflirt" value="post" type="submit"/></label></li>
+</ul>
+</div>
+</form>
+</div>
+</div>
+
+<div style="display:none">
 <div class="input-append date" id="dp1" data-date="2012-02-12" data-date-format="yyyy-mm-dd">
 <input name="date" id="duedate" class="span2" size="16" type="text" value="2012-02-12" readonly="">
 <span class="add-on"><i class="icon-calendar"></i></span>
 </div>
 </div>
+
+</div>
 <div id="myposts-panel" class="panel">
-My Posts
+<header>my posts</header>
+<div class="contentbody">
+Body
+</div>
 </div>
 <div id="messages-panel" class="panel">
-Messages
+<header>messages</header>
+<div class="contentbody">
+Body
+</div>
 </div>
 <div id="campusfeed-panel" class="panel">
-Campus Feed
+<header class="feedheading"><span class="campusfeedheading"></span> feed</header>
+<div class="contentbody">
+<ul id="campusfeedlist">
+<li class="feedItem">
+<div class="postWrapper">
+<div class="gendersymbols">
+<span class="boygender">b</span>
+<span class="arrowgender">&rarr;</span>
+<span class="girlgender">g</span>
+</div>
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+<div class="postactions">
+<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>
+</div>
+</div>
+</li>
+<li class="feedItem">
+<div class="postWrapper">
+<div class="gendersymbols">
+<span class="boygender">b</span>
+<span class="arrowgender">&rarr;</span>
+<span class="girlgender">g</span>
+</div>
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+<div class="postactions">
+<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>
+</div>
+</div>
+</li>
+<li class="feedItem">
+<div class="postWrapper">
+<div class="gendersymbols">
+<span class="boygender">b</span>
+<span class="arrowgender">&rarr;</span>
+<span class="girlgender">g</span>
+</div>
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+<div class="postactions">
+<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>
+</div>
+</div>
+</div>
+</li>
+</ul>
 </div>
 <div id="browse-panel" class="panel">
-Browse
+<header>global feed</header>
+<div class="contentbody">
+Body
+</div>
 </div>
 </div>
 </div>
 <div id="loggedout">
 <div class="content cf">
 <div id="authpanel">
+<div id="statement">
+college students flirting <span class="bold">anonymously</span>
+</div>
 <div id="login">
 <header>Login</header>
-<form id="f_login" onsubmit="return false" autocomplete="off">
+<form id="f_login" class="coolform" onsubmit="return false" autocomplete="off">
+<div class="formcontainer">
 <input type="hidden" name="formname" value="login"/>
 <div><label for="lemail">Email (.edu):</label><input id="lemail" name="email" type="text" spellcheck="false" value=""/></div>
 <div><label for="lpassword">Password:</label><input id="lpassword" name="password" type="password" spellcheck="false" value=""/></div>
+</div>
 <div class="buttonTools">
 <ul class="toolList rfloat">
 <li class="listItem"><label class="loginButton" for="b_login_splash"><input id="b_login_splash" value="Login" type="submit"/></label></li>
@@ -55,9 +155,10 @@ Browse
 </div>
 <div id="register">
 <header>Register</header>
-<form id="f_register" onsubmit="return false" autocomplete="off">
+<form id="f_register" class="coolform" onsubmit="return false" autocomplete="off">
+<div class="formcontainer">
 <input type="hidden" name="formname" value="register"/>
-<div><label for="reg_name">Name (private):</label><input id="reg_name" name="name" type="text" spellcheck="false" value=""/></div>
+<div><label for="reg_name">Full Name (private):</label><input id="reg_name" name="name" type="text" spellcheck="false" value=""/></div>
 <div><label for="reg_email">Email (.edu):</label><input id="reg_email" name="email" type="email" spellcheck="false" value=""/></div>
 <div><label for="reg_password">Password:</label><input id="reg_password" name="password" type="password" spellcheck="false" value=""/></div>
 <div>
@@ -67,6 +168,7 @@ Browse
 <option value="male">Male</option>
 <option value="female">Female</option>
 </select>
+</div>
 </div>
 <div class="buttonTools">
 <ul class="toolList lfloat">
@@ -78,7 +180,42 @@ Browse
 </div>
 </div>
 <div id="previewfeed">
-Text Here!
+<header>global feed</header>
+<ul id="campusfeedlist">
+<li class="feedItem">
+<div class="postWrapper">
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+</div>
+</li>
+<li class="feedItem">
+<div class="postWrapper">
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+</div>
+</li>
+<li class="feedItem">
+<div class="postWrapper">
+<div class="posthead">
+hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>
+</div>
+<div class="postbody">
+You have your hoodie on in the UL Basement. Take it off and talk to me.
+</div>
+<div class="postalias"><span class="postcampus">UNC</span> - <span class="alias">myalias</span></div>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>

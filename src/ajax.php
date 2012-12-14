@@ -89,6 +89,8 @@ if ($ACTION == 'login') {
 			$theirgender="Female";
 			$message="You have your hoodie on in the UL Basement. Take it off and talk to me.";
 			$timestamp=mktime(4, 35, 0, 12, 11, 2012);
+			$comments=json_encode(array(array("user_id"=>1,"gender"=>"Male","timestamp"=>$timespotted,"data"=>"comment 1"),array("user_id"=>2,"gender"=>"Male","timestamp"=>$timestamp,"data"=>"comment 2")));
+			$comments="";
 			$db->insert('campusflirt_posts', array(
 				'owner_id'=>$owner_id,
 				'ownergender'=>$ownergender,
@@ -99,6 +101,7 @@ if ($ACTION == 'login') {
 				'theirgender'=>$theirgender,
 				'message'=>$message,
 				'timestamp'=>$timestamp,
+				'comments'=>$comments,
 				'reports'=>0
 			));
 			$flirt_id=1;
@@ -150,6 +153,20 @@ if ($ACTION == 'logged') {
 			header('Content-Type: application/json; charset=utf8');
 			print_json(array('user'=>$db->fetchAssocRow()));
 		} else print_json(array('user'=>false),true);
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'posts') {
+	varcheck($UID,true,$_SESSION['user_id'],'uid');
+	try {
+		$db = new MySQL();
+		$db->query('');
+		if ($db->numRows() == 1) {
+			header('Content-Type: application/json; charset=utf8');
+			
+			print_json();
+		} else print_json();
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();

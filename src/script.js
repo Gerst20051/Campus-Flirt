@@ -67,9 +67,13 @@ loggedIn: function(){
 			$("#loggedin").show();
 			$("#loggedout").hide();
 			$("body").addClass("in").removeClass("out");
-			$(".campusheading").text(response.user.campus);
+			$(".campusheading, .campusfeedheading").text(response.user.campus);
 			self.handleHash();
 			if (self.currentPanel === "") self.setPanel("campusfeed");
+			self.loadCampusFeed();
+			self.loadBrowse();
+			self.loadMyPosts();
+			self.loadMessages();
 		} else aC.logout();
 	});
 },
@@ -79,6 +83,7 @@ loggedOut: function(){
 	$("#loggedin").hide();
 	$("body").addClass("out").removeClass("in");
 	$(".campusheading").empty();
+	this.loadPreviewFeed();
 },
 login: function(){
 	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
@@ -188,6 +193,30 @@ onWindowScroll: function(){
 			// load more updates when campus feed or browse is active
 		}
 	}
+},
+addNewPost: function(){
+	
+},
+addPosts: function(){
+	var s = "";
+},
+loadCampusFeed: function(){
+	
+},
+loadBrowse: function(){
+	
+},
+loadMyPosts: function(){
+	
+},
+loadMessages: function(){
+	
+},
+addPreviewPost: function(){
+	
+},
+loadPreviewFeed: function(){
+	
 },
 dom: function(){
 	var self = this;
