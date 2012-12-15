@@ -146,6 +146,24 @@ $.fn.clearForm = function(){
 	});
 };
 
+function timestamp(){
+	return Date.now && Date.now() || +new Date;
+}
+
+function timestamp_php(){
+	return Date.now && window.parseInt(Date.now() / 1000, 10) || window.parseInt(+new Date / 1000, 10);
+}
+
+function today(datetime){
+	var today = new Date(timestamp());
+	return (datetime.getDate() == today.getDate() && datetime.getMonth() == today.getMonth() && datetime.getYear() == today.getYear());
+}
+
+function yesterday(datetime){
+	var yesterday = new Date(timestamp() - 86400000);
+	return (datetime.getDate() == yesterday.getDate() && datetime.getMonth() == yesterday.getMonth() && datetime.getYear() == yesterday.getYear());
+}
+
 function stringToBoolean(string){
 	if (typeof string == "undefined") {
 		log("stringToBoolean Undefined Error");

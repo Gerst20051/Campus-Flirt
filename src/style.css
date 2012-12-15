@@ -158,24 +158,28 @@ width:344px;
 word-wrap:break-word;
 }
 
-#campusfeedlist {
+.feedlist {
 line-height:1.4;
 }
 
-#campusfeedlist > li {
+.feedlist > li {
 border-bottom:1px solid transparent;
 border-left:1px solid transparent;
 border-top:1px solid #eee;
 padding:16px 44px 0 140px;
 }
 
-#campusfeedlist > li:first-child {
+.feedlist > li:first-child {
 border-top:0;
 }
 
-#previewfeed #campusfeedlist > li {
+#previewfeedlist > li {
 border-top:1px dotted #b2adaa;
 padding:20px;
+}
+
+#previewfeedlist > li:last-child {
+display:none;
 }
 
 .postWrapper { min-height:100px; }
@@ -217,7 +221,7 @@ margin:8px 0;
 color:#fff;
 }
 
-ul#campusfeedlist > li:hover .postbody {
+.feedlist > li:hover .postbody {
 user-select:text;
 -khtml-user-select:text;
 -moz-user-select:text;

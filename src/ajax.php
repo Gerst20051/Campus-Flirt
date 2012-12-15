@@ -185,7 +185,7 @@ if ($ACTION == 'logged') {
 		echo $e->getMessage();
 		exit();
 	}
-} elseif ($ACTION == 'posts') {
+} elseif ($ACTION == 'myposts') {
 	try {
 		$db = new MySQL();
 		$db->query('SELECT * FROM campusflirt_posts WHERE owner_id = '.$_SESSION['user_id']);
@@ -233,6 +233,18 @@ if ($ACTION == 'logged') {
 			header('Content-Type: application/json; charset=utf8');
 			print_json(array('browse'=>$db->fetchAssocRows()));
 		} else print_json(array('browse'=>false));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'preview') {
+	try {
+		$db = new MySQL();
+		$db->query('SELECT * FROM campusflirt_posts ORDER BY timestamp DESC LIMIT 30');
+		if (0 < $db->numRows()) {
+			header('Content-Type: application/json; charset=utf8');
+			print_json(array('preview'=>$db->fetchAssocRows()));
+		} else print_json(array('preview'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();

@@ -24,6 +24,9 @@ currentPanel: "",
 moreUpdates: false, // change to true
 panels: ['post','myposts','messages','campusfeed','browse'],
 user: {},
+previewFeed: [],
+previewFeedIndex: 0,
+previewFeedIntervalId: 0,
 setPanel: function(id){
 	if (id === this.currentPanel) return;
 	if (-1 < $.inArray(id, this.panels)) {
@@ -75,6 +78,12 @@ loggedIn: function(){
 			self.loadBrowse();
 			self.loadMyPosts();
 			self.loadMessages();
+			self.previewFeed = [];
+			$("#previewfeedlist").empty();
+			if (0 < self.previewFeedIntervalId) {
+				window.clearInterval(previewFeedIntervalId);
+				self.previewFeedIntervalId = 0;
+			}
 		} else aC.logout();
 	});
 },
@@ -232,42 +241,118 @@ postFlirt: function(){
 addNewPost: function(){
 	
 },
-addPosts: function(){
-	var s = "";
+addPosts: function(data){
+	var s = '',
+		boy = '<span class="boygender">b</span>',
+		girl = '<span class="girlgender">g</span>';
+	
+	$.each(data,function(i,v){
+		s += '<li class="feedItem">';
+		s += '<div class="postWrapper">';
+		s += '<div class="gendersymbols">';
+		if (v.ownergender == "Male") s += boy;
+		else s += girl;
+		s += '<span class="arrowgender">&rarr;</span>';
+		if (v.theirgender == "Male") s += boy;
+		else s += girl;
+		s += '</div>';
+		s += '<div class="posthead">';
+		s += 'hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>';
+		s += '</div>';
+		s += '<div class="postbody">';
+		s += 'You have your hoodie on in the UL Basement. Take it off and talk to me.';
+		s += '</div>';
+		s += '<div class="postalias"><span class="postcampus-link link">UNC</span> - <span class="alias">myalias</span></div>';
+		s += '<div class="postactions">';
+		s += '<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>';
+		s += '</div>';
+		s += '</div>';
+		s += '</li>';
+	});
+	return s;
 },
 loadCampusFeed: function(){
-	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
-		if (response.user !== false) {
-			var s = "";
+	var self = this;
+	$.getJSON(this.ajaxurl, {action:"feed"}, function(response){
+		if (response.feed !== false) {
+			var s = self.addPosts(response.feed);
+			$("#campusfeedlist").append(s);
 		}
 	});
 },
 loadBrowse: function(){
-	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
-		if (response.user !== false) {
-			var s = "";
+	var self = this;
+	$.getJSON(this.ajaxurl, {action:"browse"}, function(response){
+		if (response.browse !== false) {
+			var s = self.addPosts(response.browse);
+			$("#globalfeedlist").append(s);
 		}
 	});
 },
 loadMyPosts: function(){
-	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
-		if (response.user !== false) {
+	var self = this;
+	$.getJSON(this.ajaxurl, {action:"myposts"}, function(response){
+		if (response.posts !== false) {
 			var s = "";
 		}
 	});
 },
 loadMessages: function(){
-	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
-		if (response.user !== false) {
+	var self = this;
+	$.getJSON(this.ajaxurl, {action:"messages"}, function(response){
+		if (response.messages !== false) {
 			var s = "";
 		}
 	});
 },
-addPreviewPost: function(){
-	
+addPreviewPosts: function(data){
+	var s = '';
+	$.each(data,function(i,v){
+		var datetime = new Date(parseInt(v.timespotted+'000',10)), hours = datetime.getHours(), prefix = "AM", minutes = datetime.getMinutes(), seconds = datetime.getSeconds();
+		if (hours > 12) { hours = hours - 12; prefix = "PM"; }
+		else if (hours == 0) hours = 12;
+		if (minutes < 10) { minutes = '0'+minutes; }
+		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+		var monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+		var dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+		var time = hours + ":" + minutes + " " + prefix;
+		var date = dayArray[datetime.getDay()] + ", " + monthArray[datetime.getMonth()] + " " + datetime.getDate() + ", " + datetime.getFullYear();
+		s += '<li class="feedItem">';
+		s += '<div class="postWrapper">';
+		s += '<div class="posthead">';
+		s += 'hey <span class="postgender">';
+		if (v.theirgender == "Male") s += 'boy';
+		else s += 'girl';
+		s += '</span> in <span class="postlocation">'+v.location+'</span> around <span class="posttime">'+time+'</span> on <span class="postdate">'+date+'</span>';
+		s += '</div>';
+		s += '<div class="postbody">'+v.message+'</div>';
+		s += '<div class="postalias"><span class="postcampus">'+v.campus.toUpperCase()+'</span> - <span class="alias">'+v.alias+'</span></div>';
+		s += '</div>';
+		s += '</li>';
+	});
+	return s;
 },
 loadPreviewFeed: function(){
-	
+	var self = this;
+	$.getJSON(this.ajaxurl, {action:"preview"}, function(response){
+		if (response.preview !== false) {
+			self.previewFeed = response.preview;
+			self.previewFeedIntervalId = window.setInterval(function(){ self.handlePreviewFeed(); }, 6000);
+			self.handlePreviewFeed();
+		}
+	});
+},
+handlePreviewFeed: function(){
+	if (0 < $("#previewfeedlist").children().length) {
+		var s = this.addPreviewPosts(this.previewFeed.slice(this.previewFeedIndex++,this.previewFeedIndex));
+		$("#previewfeedlist").children("li:first").slideUp(800,function(){ $(this).remove(); });
+		$("#previewfeedlist").children("li:last").slideDown(800,function(){ $("#previewfeedlist").append(s); });
+		if (this.previewFeedIndex === this.previewFeed.length) this.previewFeedIndex = 0;
+	} else {
+		var s = this.addPreviewPosts(this.previewFeed.slice(0,4));
+		$("#previewfeedlist").append(s);
+		this.previewFeedIndex = 4;
+	}
 },
 dom: function(){
 	var self = this;
