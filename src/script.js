@@ -242,11 +242,29 @@ addNewPost: function(){
 	
 },
 addPosts: function(data){
-	var s = '',
+	var s = '', action = "browse",
 		boy = '<span class="boygender">b</span>',
 		girl = '<span class="girlgender">g</span>';
 	
 	$.each(data,function(i,v){
+		var datetime = new Date(parseInt(v.timespotted+'000',10)), hours = datetime.getHours(), prefix = "AM", minutes = datetime.getMinutes(), seconds = datetime.getSeconds();
+		if (hours > 12) { hours = hours - 12; prefix = "PM"; }
+		else if (hours == 0) hours = 12;
+		if (minutes < 10) { minutes = '0'+minutes; }
+		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+		var monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+		var dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+		var dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+		var time = hours + ":" + minutes + " " + prefix;
+		var timeordate = '';
+		if (today(datetime)) {
+			timeordate = '<span class="posttime">'+time+'</span>';
+		} else if (yesterday(datetime)) {
+			timeordate = '<span class="posttime">Yesterday ' + time+'</span>';
+		} else {
+			var date = dayShortArray[datetime.getDay()] + ", " + monthShortArray[datetime.getMonth()] + " " + datetime.getDate() + ", " + datetime.getFullYear();
+			timeordate = '<span class="posttime">'+time+'</span> on <span class="postdate">'+date+'</span>';
+		}
 		s += '<li class="feedItem">';
 		s += '<div class="postWrapper">';
 		s += '<div class="gendersymbols">';
@@ -256,13 +274,17 @@ addPosts: function(data){
 		if (v.theirgender == "Male") s += boy;
 		else s += girl;
 		s += '</div>';
-		s += '<div class="posthead">';
-		s += 'hey <span class="postgender">girl</span> in <span class="postlocation">UL</span> around <span class="posttime">1:45:30 PM</span> on <span class="postdate">6/15/2009</span>';
+		s += '<div class="posthead">';		
+		s += 'hey <span class="postgender">';
+		if (v.theirgender == "Male") s += 'boy';
+		else s += 'girl';
+		s += '</span> in <span class="postlocation">'+v.location+'</span> around ';
+		s += timeordate;
 		s += '</div>';
-		s += '<div class="postbody">';
-		s += 'You have your hoodie on in the UL Basement. Take it off and talk to me.';
-		s += '</div>';
-		s += '<div class="postalias"><span class="postcampus-link link">UNC</span> - <span class="alias">myalias</span></div>';
+		s += '<div class="postbody">'+v.message+'</div>';
+		s += '<div class="postalias">';
+		if (action == "browse") s += '<span class="postcampus-link link">'+v.campus.toUpperCase()+'</span> ';
+		s += '- <span class="alias">'+v.alias+'</span></div>';
 		s += '<div class="postactions">';
 		s += '<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>';
 		s += '</div>';
