@@ -1,8 +1,8 @@
-HnS Campus Flirt
+Campus Flirt
 ===============
 
-HnS Campus Flirt. Students Anonymously Flirting!
+Campus Flirt. Students Anonymously Flirting!
 -------------------------------
-[HnS Campus Flirt](http://hns.netai.net/campusflirt/) 
+[Campus Flirt](http://campusflirt.co) 
 
 `Creator: Andrew Gerst`
