@@ -191,8 +191,8 @@ if ($ACTION == 'logged') {
 		$db->query('SELECT * FROM campusflirt_posts WHERE owner_id = '.$_SESSION['user_id']);
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			print_json(array('posts'=>$db->fetchAssocRows()));
-		} else print_json(array('posts'=>false));
+			print_json(array('data'=>$db->fetchAssocRows()));
+		} else print_json(array('data'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
@@ -203,8 +203,8 @@ if ($ACTION == 'logged') {
 		$db->query('SELECT * FROM campusflirt_messages WHERE receiver_id = '.$_SESSION['user_id'].' OR sender_id = '.$_SESSION['user_id']);
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			print_json(array('messages'=>$db->fetchAssocRows()));
-		} else print_json(array('messages'=>false));
+			print_json(array('data'=>$db->fetchAssocRows()));
+		} else print_json(array('data'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
@@ -215,8 +215,8 @@ if ($ACTION == 'logged') {
 		$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$_SESSION['campus'].'\'');
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			print_json(array('feed'=>$db->fetchAssocRows()));
-		} else print_json(array('feed'=>false));
+			print_json(array('data'=>$db->fetchAssocRows()));
+		} else print_json(array('data'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
@@ -231,8 +231,8 @@ if ($ACTION == 'logged') {
 		}
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			print_json(array('browse'=>$db->fetchAssocRows()));
-		} else print_json(array('browse'=>false));
+			print_json(array('data'=>$db->fetchAssocRows()));
+		} else print_json(array('data'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
@@ -243,8 +243,8 @@ if ($ACTION == 'logged') {
 		$db->query('SELECT * FROM campusflirt_posts ORDER BY timestamp DESC LIMIT 30');
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			print_json(array('preview'=>$db->fetchAssocRows()));
-		} else print_json(array('preview'=>false));
+			print_json(array('data'=>$db->fetchAssocRows()));
+		} else print_json(array('data'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();

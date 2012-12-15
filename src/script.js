@@ -89,11 +89,11 @@ loggedIn: function(){
 },
 loggedOut: function(){
 	if (this.logged !== false) return;
+	this.loadPreviewFeed();
 	$("#loggedout").show();
 	$("#loggedin").hide();
 	$("body").addClass("out").removeClass("in");
 	$(".campusheading").empty();
-	this.loadPreviewFeed();
 },
 login: function(){
 	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
@@ -274,8 +274,8 @@ addPosts: function(data){
 loadCampusFeed: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"feed"}, function(response){
-		if (response.feed !== false) {
-			var s = self.addPosts(response.feed);
+		if (response.data !== false) {
+			var s = self.addPosts(response.data);
 			$("#campusfeedlist").append(s);
 		}
 	});
@@ -283,8 +283,8 @@ loadCampusFeed: function(){
 loadBrowse: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"browse"}, function(response){
-		if (response.browse !== false) {
-			var s = self.addPosts(response.browse);
+		if (response.data !== false) {
+			var s = self.addPosts(response.data);
 			$("#globalfeedlist").append(s);
 		}
 	});
@@ -292,7 +292,7 @@ loadBrowse: function(){
 loadMyPosts: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"myposts"}, function(response){
-		if (response.posts !== false) {
+		if (response.data !== false) {
 			var s = "";
 		}
 	});
@@ -300,7 +300,7 @@ loadMyPosts: function(){
 loadMessages: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"messages"}, function(response){
-		if (response.messages !== false) {
+		if (response.data !== false) {
 			var s = "";
 		}
 	});
@@ -315,15 +315,25 @@ addPreviewPosts: function(data){
 		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 		var monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
 		var dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+		var dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 		var time = hours + ":" + minutes + " " + prefix;
-		var date = dayArray[datetime.getDay()] + ", " + monthArray[datetime.getMonth()] + " " + datetime.getDate() + ", " + datetime.getFullYear();
+		var timeordate = '';
+		if (today(datetime)) {
+			timeordate = '<span class="posttime">'+time+'</span>';
+		} else if (yesterday(datetime)) {
+			timeordate = '<span class="posttime">Yesterday ' + time+'</span>';
+		} else {
+			var date = dayShortArray[datetime.getDay()] + ", " + monthShortArray[datetime.getMonth()] + " " + datetime.getDate() + ", " + datetime.getFullYear();
+			timeordate = '<span class="posttime">'+time+'</span> on <span class="postdate">'+date+'</span>';
+		}
 		s += '<li class="feedItem">';
 		s += '<div class="postWrapper">';
 		s += '<div class="posthead">';
 		s += 'hey <span class="postgender">';
 		if (v.theirgender == "Male") s += 'boy';
 		else s += 'girl';
-		s += '</span> in <span class="postlocation">'+v.location+'</span> around <span class="posttime">'+time+'</span> on <span class="postdate">'+date+'</span>';
+		s += '</span> in <span class="postlocation">'+v.location+'</span> around ';
+		s += timeordate;
 		s += '</div>';
 		s += '<div class="postbody">'+v.message+'</div>';
 		s += '<div class="postalias"><span class="postcampus">'+v.campus.toUpperCase()+'</span> - <span class="alias">'+v.alias+'</span></div>';
@@ -335,8 +345,8 @@ addPreviewPosts: function(data){
 loadPreviewFeed: function(){
 	var self = this;
 	$.getJSON(this.ajaxurl, {action:"preview"}, function(response){
-		if (response.preview !== false) {
-			self.previewFeed = response.preview;
+		if (response.data !== false) {
+			self.previewFeed = response.data;
 			self.previewFeedIntervalId = window.setInterval(function(){ self.handlePreviewFeed(); }, 6000);
 			self.handlePreviewFeed();
 		}
