@@ -139,7 +139,7 @@ window.Hash = {
 
 $.fn.clearForm = function(){
 	return this.each(function(){
-		$(this).find("input, select, textarea").not(':input[type=button], :input[type=submit], :input[type=reset], :input[type=hidden]').val('');
+		$(this).find("input, select, textarea").not(':input[type=radio], :input[type=button], :input[type=submit], :input[type=reset], :input[type=hidden]').val('');
 		$(this).find("input[type=radio], input[type=checkbox]").each(function(){
 			$(this).attr('checked', false);
 		});

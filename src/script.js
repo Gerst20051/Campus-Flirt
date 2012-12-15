@@ -67,6 +67,8 @@ loggedIn: function(){
 			$("#loggedout").hide();
 			$("body").addClass("in").removeClass("out");
 			$(".campusheading, .campusfeedheading").text(response.user.campus);
+			$("#postflirt_datetime").datetimepicker();
+			$("#postflirt_gender").buttonset();
 			self.handleHash();
 			if (self.currentPanel === "") self.setPanel("campusfeed");
 			self.loadCampusFeed();
@@ -193,32 +195,35 @@ onWindowScroll: function(){
 		}
 	}
 },
-post: function(){
-	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
-	if ($.trim(email.val()) == "") { email.addClass('error'); e = true; } else email.removeClass('error');
-	if ($.trim(password.val()) == "") { password.addClass('error'); e = true; } else password.removeClass('error');
+postFlirt: function(){
+	var self = this, e = false,
+		alias = $("#postflirt_alias"),
+		location = $("#postflirt_location"),
+		datetime = $("#postflirt_datetime"),
+		gender = $("#postflirt_gender :radio:checked"),
+		message = $("#postflirt_message");
+	
+	if ($.trim(alias.val()) == "") { alias.addClass('error'); e = true; } else alias.removeClass('error');
+	if ($.trim(location.val()) == "") { location.addClass('error'); e = true; } else location.removeClass('error');
+	if ($.trim(datetime.val()) == "") { datetime.addClass('error'); e = true; } else datetime.removeClass('error');
+	if ($.trim(message.val()) == "") { message.addClass('error'); e = true; } else message.removeClass('error');
+	if (typeof gender.val() == "undefined") { e = true; }
+	
 	if (!e) {
 		$("#f_postflirt").find("input,select").attr('disabled',true);
-		var output = {}, inputs = $("#f_postflirt").find("input").filter("[name]");
+		var output = {}, inputs = $("#f_postflirt").find("input").not(":radio").filter("[name]");
 		$.map(inputs, function(n, i){
 			output[n.name] = $.trim($(n).val());
 		});
+		output.gender = $("#postflirt_gender :radio:checked").val();
 		$.post(this.ajaxurl, {action:"postflirt",form:output}, function(response){
 			$("#f_postflirt").find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.posted)) {
-				/*
-				$("#reg_name, #reg_email, #reg_password").removeClass('error');
-				$("#b_login_splash").removeClass('error');
-				$("#f_register").clearForm();
-				$("#f_login").clearForm();
-				self.logged = true;
-				self.loggedIn();
-				*/
+				$("#f_postflirt").find("input.error").removeClass('error').end().clearForm();
+				$("#f_postflirt #postflirt_gender :radio").attr("checked", false).button("refresh");
+				// prepend post to campus feed and global feed (or will it load it automatically)
 			} else {
-				/*
-				$("#b_login_splash").addClass('error');
-				$("#lpassword").val('');
-				*/
+				$("#b_postflirt").addClass('error');
 			}
 		});
 	}
@@ -322,6 +327,9 @@ dom: function(){
 	});
 	$(".reportaction-link").live('click',function(){
 		
+	});
+	$("#b_postflirt").live('click',function(){
+		self.postFlirt();
 	});
 }
 };

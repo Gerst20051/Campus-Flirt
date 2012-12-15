@@ -44,9 +44,13 @@
 <input type="hidden" name="formname" value="postflirt"/>
 <div><label for="postflirt_alias">alias:</label><input id="postflirt_alias" name="alias" type="text" spellcheck="false" value=""/></div>
 <div><label for="postflirt_location">location:</label><input id="postflirt_location" name="location" type="text" spellcheck="false" value=""/></div>
-<div><label for="postflirt_time">time:</label><input id="postflirt_time" name="time" type="text" spellcheck="false" value=""/></div>
-<div><label for="postflirt_date">date:</label><input id="postflirt_date" name="date" type="text" spellcheck="false" value=""/></div>
-<div><label for="postflirt_gender">gender:</label><input id="postflirt_gender" name="gender" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_datetime">date:</label><input id="postflirt_datetime" name="datetime" type="text" spellcheck="false" value=""/></div>
+<div><label for="postflirt_gender">gender:</label>
+<div id="postflirt_gender">
+<input type="radio" id="postflirt_gender_male" name="gender" value="Male"><label for="postflirt_gender_male" class="genderlabel">Male</label>
+<input type="radio" id="postflirt_gender_female" name="gender" value="Female"><label for="postflirt_gender_female" class="genderlabel">Female</label>
+</div>
+</div>
 <div><label for="postflirt_message">message:</label><input id="postflirt_message" name="message" type="text" spellcheck="false" value=""/></div>
 </div>
 <div class="buttonTools">
@@ -57,14 +61,6 @@
 </form>
 </div>
 </div>
-
-<div style="display:none">
-<div class="input-append date" id="dp1" data-date="2012-02-12" data-date-format="yyyy-mm-dd">
-<input name="date" id="duedate" class="span2" size="16" type="text" value="2012-02-12" readonly="">
-<span class="add-on"><i class="icon-calendar"></i></span>
-</div>
-</div>
-
 </div>
 <div id="myposts-panel" class="panel">
 <header>my posts</header>

@@ -91,36 +91,31 @@ if ($ACTION == 'login') {
 	$VARS = array_map('varcheck',$FORM);
 	if ($VARS['formname'] != 'postflirt') print_json(array('posted'=>false));
 	else unset($VARS['formname']);
-	$required = array('alias','location','time','date','gender','message');
+	$required = array('alias','location','datetime','gender','message');
 	if (!validateinput($VARS,$required)) print_json(array('posted'=>false));
 	extract($VARS);
+	$pd = date_parse($datetime);
+	$timespotted = mktime($pd['hour'], $pd['minute'], $pd['second'], $pd['month'], $pd['day'], $pd['year']);
+	$timestamp = time();
+	$comments=json_encode(array(array("user_id"=>1,"gender"=>"Male","timestamp"=>$timespotted,"data"=>"comment 1"),array("user_id"=>2,"gender"=>"Male","timestamp"=>$timestamp,"data"=>"comment 2")));
+	$comments="";
 	try {
 		$db = new MySQL();
-		$owner_id=$_SESSION['user_id'];
-		$ownergender="Male";
-		$campus="unc";
-		$alias="myalias";
-		$location="UL";
-		$timespotted=mktime(4, 30, 0, 12, 11, 2012);
-		$theirgender="Female";
-		$message="You have your hoodie on in the UL Basement. Take it off and talk to me.";
-		$timestamp=mktime(4, 35, 0, 12, 11, 2012);
-		$comments=json_encode(array(array("user_id"=>1,"gender"=>"Male","timestamp"=>$timespotted,"data"=>"comment 1"),array("user_id"=>2,"gender"=>"Male","timestamp"=>$timestamp,"data"=>"comment 2")));
-		$comments="";
 		$db->insert('campusflirt_posts', array(
-			'owner_id'=>$owner_id,
-			'ownergender'=>$ownergender,
-			'campus'=>$campus,
+			'owner_id'=>$_SESSION['user_id'],
+			'ownergender'=>$_SESSION['gender'],
+			'campus'=>$_SESSION['campus'],
 			'alias'=>$alias,
 			'location'=>$location,
 			'timespotted'=>$timespotted,
-			'theirgender'=>$theirgender,
+			'theirgender'=>$gender,
 			'message'=>$message,
 			'timestamp'=>$timestamp,
 			'comments'=>$comments,
 			'reports'=>0
 		));
 		if ($db->affectedRows() == 1) print_json(array('posted'=>true));
+		else print_json(array('posted'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
@@ -141,7 +136,7 @@ if ($ACTION == 'login') {
 		$sender_id=$_SESSION['user_id'];
 		$senderalias="mysendalias";
 		$privatemessage="hey i think you're cute too!";
-		$timesent=mktime(4, 40, 0, 12, 11, 2012);
+		$timesent=time();
 		$db->insert('campusflirt_messages', array(
 			'flirt_id'=>$flirt_id,
 			'receiver_id'=>$receiver_id,

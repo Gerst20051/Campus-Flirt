@@ -70,7 +70,7 @@ padding:14px;
 width:400px;
 }
 
-#postflirt_container .coolform label {
+#postflirt_container .coolform label:not(.genderlabel) {
 width:4em;
 }
 
@@ -452,7 +452,7 @@ padding-bottom:12px;
 margin:10px;
 }
 
-.coolform .formcontainer label {
+.coolform .formcontainer label:not(.genderlabel) {
 color:#fff;
 display:inline-block;
 margin-bottom:6px;
@@ -483,4 +483,14 @@ box-shadow:0 0 5px #ff4848 !important;
 float:right;
 position:relative;
 right:-2px;
+}
+
+#ui-datepicker-div {
+font-size:13px;
+}
+
+#postflirt_gender {
+display:inline-block;
+font-size:13px;
+margin-left:-6px;
 }

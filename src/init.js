@@ -7,8 +7,8 @@
 		f = "getElementsByTagName",
 		g = window.navigator.userAgent,
 		h = g.indexOf("Firefox") !== -1 || g.indexOf("Opera") !== -1 ? true : false,
-		i = ["base.css","style.css","http://www.eyecon.ro/datepicker/css/datepicker.css"],
-		j = ["http://code.jquery.com/jquery.min.js","http://www.eyecon.ro/datepicker/js/datepicker.js","functions.js","script.js"],
+		i = ["base.css","style.css","http://code.jquery.com/ui/1.9.2/themes/mint-choc/jquery-ui.css","jquery-ui-timepicker.css"],
+		j = ["http://code.jquery.com/jquery.min.js","http://code.jquery.com/ui/1.9.2/jquery-ui.min.js","jquery-ui-timepicker.js","jquery-ui-slider.js","functions.js","script.js"],
 		l = 0,
 		n,
 		m;
