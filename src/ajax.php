@@ -165,7 +165,7 @@ if ($ACTION == 'logged') {
 } elseif ($ACTION == 'checkemail') {
 	try {
 		$db = new MySQL();
-		$db->query('SELECT email FROM campusflirt_login WHERE email = "'.$EMAIL.'" LIMIT 1');
+		$db->query('SELECT email FROM campusflirt_login WHERE email = "'.mysql_real_escape_string($EMAIL).'" LIMIT 1');
 		if ($db->numRows() == 1) print_json(array('email'=>true));
 		else print_json(array('email'=>false));
 	} catch(Exception $e) {
@@ -227,7 +227,7 @@ if ($ACTION == 'logged') {
 		if (!check($CAMPUS)) {
 			$db->query('SELECT * FROM campusflirt_posts');
 		} else {
-			$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$CAMPUS.'\'');
+			$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.mysql_real_escape_string($CAMPUS).'\'');
 		}
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');

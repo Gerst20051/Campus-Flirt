@@ -220,6 +220,7 @@ postFlirt: function(){
 			$("#f_postflirt").find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.posted)) {
 				$("#f_postflirt").find("input.error").removeClass('error').end().clearForm();
+				$("#f_postflirt #postflirt_datetime").datepicker("setDate", null);
 				$("#f_postflirt #postflirt_gender :radio").attr("checked", false).button("refresh");
 				// prepend post to campus feed and global feed (or will it load it automatically)
 			} else {
