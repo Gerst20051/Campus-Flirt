@@ -62,8 +62,7 @@ loggedIn: function(){
 	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
 		if (response.user !== false) {
 			self.user = response.user;
-			if (self.user.middlename != "") self.user.fullname = self.user.firstname+' '+self.user.middlename+' '+self.user.lastname;
-			else self.user.fullname = self.user.firstname+' '+self.user.lastname;
+			self.user.fullname = self.user.firstname+' '+self.user.lastname;
 			$("#loggedin").show();
 			$("#loggedout").hide();
 			$("body").addClass("in").removeClass("out");
@@ -194,6 +193,36 @@ onWindowScroll: function(){
 		}
 	}
 },
+post: function(){
+	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
+	if ($.trim(email.val()) == "") { email.addClass('error'); e = true; } else email.removeClass('error');
+	if ($.trim(password.val()) == "") { password.addClass('error'); e = true; } else password.removeClass('error');
+	if (!e) {
+		$("#f_postflirt").find("input,select").attr('disabled',true);
+		var output = {}, inputs = $("#f_postflirt").find("input").filter("[name]");
+		$.map(inputs, function(n, i){
+			output[n.name] = $.trim($(n).val());
+		});
+		$.post(this.ajaxurl, {action:"postflirt",form:output}, function(response){
+			$("#f_postflirt").find("input,select").attr('disabled',false);
+			if (stringToBoolean(response.posted)) {
+				/*
+				$("#reg_name, #reg_email, #reg_password").removeClass('error');
+				$("#b_login_splash").removeClass('error');
+				$("#f_register").clearForm();
+				$("#f_login").clearForm();
+				self.logged = true;
+				self.loggedIn();
+				*/
+			} else {
+				/*
+				$("#b_login_splash").addClass('error');
+				$("#lpassword").val('');
+				*/
+			}
+		});
+	}
+},
 addNewPost: function(){
 	
 },
@@ -201,16 +230,32 @@ addPosts: function(){
 	var s = "";
 },
 loadCampusFeed: function(){
-	
+	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
+		if (response.user !== false) {
+			var s = "";
+		}
+	});
 },
 loadBrowse: function(){
-	
+	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
+		if (response.user !== false) {
+			var s = "";
+		}
+	});
 },
 loadMyPosts: function(){
-	
+	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
+		if (response.user !== false) {
+			var s = "";
+		}
+	});
 },
 loadMessages: function(){
-	
+	$.getJSON(this.ajaxurl, {action:"userdata"}, function(response){
+		if (response.user !== false) {
+			var s = "";
+		}
+	});
 },
 addPreviewPost: function(){
 	
@@ -252,6 +297,7 @@ dom: function(){
 	});
 	$(".myposts-link").live('click',function(){
 		self.setPanel('myposts');
+		self.loadMyPosts();
 	});
 	$(".messages-link").live('click',function(){
 		self.setPanel('messages');
@@ -264,6 +310,18 @@ dom: function(){
 	});
 	$(".logout-link").live('click',function(){
 		self.logout();
+	});
+	$(".postcampus-link").live('click',function(){
+		
+	});
+	$(".commentaction-link").live('click',function(){
+		
+	});
+	$(".messageaction-link").live('click',function(){
+		
+	});
+	$(".reportaction-link").live('click',function(){
+		
 	});
 }
 };

@@ -35,10 +35,8 @@ if ($ACTION == 'login') {
 			$_SESSION['access_level'] = $row['access_level'];
 			$_SESSION['last_login'] = $row['last_login'];
 			$_SESSION['campus'] = $row['campus'];
-			if (varcheck($row['middlename'],true)) $_SESSION['fullname'] = $row['firstname'] . ' ' . $row['middlename'] . ' ' . $row['lastname'];
-			else $_SESSION['fullname'] = $row['firstname'] . ' ' . $row['lastname'];
+			$_SESSION['fullname'] = $row['firstname'] . ' ' . $row['lastname'];
 			$_SESSION['firstname'] = $row['firstname'];
-			if (varcheck($row['middlename'],true)) $_SESSION['middlename'] = $row['middlename'];
 			$_SESSION['lastname'] = $row['lastname'];
 			$_SESSION['gender'] = $row['gender'];
 			$last_login = date('Y-m-d');
@@ -55,10 +53,9 @@ if ($ACTION == 'login') {
 	if ($VARS['formname'] != 'register') print_json(array('registered'=>false));
 	else unset($VARS['formname']);
 	$required = array('name','email','password','gender');
-	if (!validateinput($VARS,$required)) print_json(array('logged'=>false));
+	if (!validateinput($VARS,$required)) print_json(array('registered'=>false));
 	extract($VARS);
-	list($firstname, $middlename, $lastname) = split(' ',ucname($name));
-	if (!isset($lastname)) { $lastname = $middlename; $middlename = ''; }
+	list($firstname, $lastname) = split(' ',ucname($name));
 	if (isEduEmail($email)) $campus = getCampusFromEmail($email);
 	else print_json(array('registered'=>false));
 	try {
@@ -77,46 +74,8 @@ if ($ACTION == 'login') {
 				'user_id'=>$user_id,
 				'campus'=>$campus,
 				'firstname'=>$firstname,
-				'middlename'=>$middlename,
 				'lastname'=>$lastname,
 				'gender'=>$gender
-			));
-			$owner_id=1;
-			$ownergender="Male";
-			$alias="myalias";
-			$location="UL";
-			$timespotted=mktime(4, 30, 0, 12, 11, 2012);
-			$theirgender="Female";
-			$message="You have your hoodie on in the UL Basement. Take it off and talk to me.";
-			$timestamp=mktime(4, 35, 0, 12, 11, 2012);
-			$comments=json_encode(array(array("user_id"=>1,"gender"=>"Male","timestamp"=>$timespotted,"data"=>"comment 1"),array("user_id"=>2,"gender"=>"Male","timestamp"=>$timestamp,"data"=>"comment 2")));
-			$comments="";
-			$db->insert('campusflirt_posts', array(
-				'owner_id'=>$owner_id,
-				'ownergender'=>$ownergender,
-				'campus'=>$campus,
-				'alias'=>$alias,
-				'location'=>$location,
-				'timespotted'=>$timespotted,
-				'theirgender'=>$theirgender,
-				'message'=>$message,
-				'timestamp'=>$timestamp,
-				'comments'=>$comments,
-				'reports'=>0
-			));
-			$flirt_id=1;
-			$receiver_id=2;
-			$sender_id=1;
-			$senderalias="mysendalias";
-			$privatemessage="hey i think you're cute too!";
-			$timesent=mktime(4, 40, 0, 12, 11, 2012);
-			$db->insert('campusflirt_messages', array(
-				'flirt_id'=>$flirt_id,
-				'receiver_id'=>$receiver_id,
-				'sender_id'=>$sender_id,
-				'senderalias'=>$senderalias,
-				'privatemessage'=>$privatemessage,
-				'timesent'=>$timesent
 			));
 			if ($db->affectedRows() == 1) print_json(array('registered'=>true));
 			else print_json(array('registered'=>false));
@@ -128,45 +87,157 @@ if ($ACTION == 'login') {
 } elseif ($ACTION == 'logout') {
 	logout();
 	print_json(array('logged'=>false));
+} elseif ($ACTION == 'postflirt') {
+	$VARS = array_map('varcheck',$FORM);
+	if ($VARS['formname'] != 'postflirt') print_json(array('posted'=>false));
+	else unset($VARS['formname']);
+	$required = array('alias','location','time','date','gender','message');
+	if (!validateinput($VARS,$required)) print_json(array('posted'=>false));
+	extract($VARS);
+	try {
+		$db = new MySQL();
+		$owner_id=$_SESSION['user_id'];
+		$ownergender="Male";
+		$campus="unc";
+		$alias="myalias";
+		$location="UL";
+		$timespotted=mktime(4, 30, 0, 12, 11, 2012);
+		$theirgender="Female";
+		$message="You have your hoodie on in the UL Basement. Take it off and talk to me.";
+		$timestamp=mktime(4, 35, 0, 12, 11, 2012);
+		$comments=json_encode(array(array("user_id"=>1,"gender"=>"Male","timestamp"=>$timespotted,"data"=>"comment 1"),array("user_id"=>2,"gender"=>"Male","timestamp"=>$timestamp,"data"=>"comment 2")));
+		$comments="";
+		$db->insert('campusflirt_posts', array(
+			'owner_id'=>$owner_id,
+			'ownergender'=>$ownergender,
+			'campus'=>$campus,
+			'alias'=>$alias,
+			'location'=>$location,
+			'timespotted'=>$timespotted,
+			'theirgender'=>$theirgender,
+			'message'=>$message,
+			'timestamp'=>$timestamp,
+			'comments'=>$comments,
+			'reports'=>0
+		));
+		if ($db->affectedRows() == 1) print_json(array('posted'=>true));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'message') {
+	/*
+	$VARS = array_map('varcheck',$FORM);
+	if ($VARS['formname'] != 'message') print_json(array('messaged'=>false));
+	else unset($VARS['formname']);
+	$required = array('senderalias','privatemessage');
+	if (!validateinput($VARS,$required)) print_json(array('messaged'=>false));
+	extract($VARS);
+	*/
+	try {
+		$db = new MySQL();
+		$flirt_id=1; //$FLIRTID
+		$receiver_id=2; //#RECEIVERID
+		$sender_id=$_SESSION['user_id'];
+		$senderalias="mysendalias";
+		$privatemessage="hey i think you're cute too!";
+		$timesent=mktime(4, 40, 0, 12, 11, 2012);
+		$db->insert('campusflirt_messages', array(
+			'flirt_id'=>$flirt_id,
+			'receiver_id'=>$receiver_id,
+			'sender_id'=>$sender_id,
+			'senderalias'=>$senderalias,
+			'privatemessage'=>$privatemessage,
+			'timesent'=>$timesent
+		));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'comment') {
+	try {
+		$db = new MySQL();
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
 }
 break;
 case 'GET':
 if ($ACTION == 'logged') {
-	if (isset($_SESSION['logged'])) print_json(array('logged'=>true),true);
-	else print_json(array('logged'=>false),true);
+	if (isset($_SESSION['logged'])) print_json(array('logged'=>true));
+	else print_json(array('logged'=>false));
 } elseif ($ACTION == 'checkemail') {
 	try {
 		$db = new MySQL();
 		$db->query('SELECT email FROM campusflirt_login WHERE email = "'.$EMAIL.'" LIMIT 1');
-		if ($db->numRows() == 1) print_json(array('email'=>true),true);
-		else print_json(array('email'=>false),true);
+		if ($db->numRows() == 1) print_json(array('email'=>true));
+		else print_json(array('email'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
 	}
 } elseif ($ACTION == 'userdata') {
-	varcheck($UID,true,$_SESSION['user_id'],'uid');
+	//varcheck($UID,true,$_SESSION['user_id'],'uid');
 	try {
 		$db = new MySQL();
-		$db->query('SELECT u.user_id,u.email,i.campus,i.firstname,i.middlename,i.lastname FROM (campusflirt_login u JOIN campusflirt_info i ON u.user_id = i.user_id) WHERE u.user_id = '.$UID.' LIMIT 1');
+		$db->query('SELECT u.user_id,u.email,i.campus,i.firstname,i.lastname FROM (campusflirt_login u JOIN campusflirt_info i ON u.user_id = i.user_id) WHERE u.user_id = '.$_SESSION['user_id'].' LIMIT 1');
 		if ($db->numRows() == 1) {
 			header('Content-Type: application/json; charset=utf8');
 			print_json(array('user'=>$db->fetchAssocRow()));
-		} else print_json(array('user'=>false),true);
+		} else print_json(array('user'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();
 	}
 } elseif ($ACTION == 'posts') {
-	varcheck($UID,true,$_SESSION['user_id'],'uid');
 	try {
 		$db = new MySQL();
-		$db->query('');
-		if ($db->numRows() == 1) {
+		$db->query('SELECT * FROM campusflirt_posts WHERE owner_id = '.$_SESSION['user_id']);
+		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
-			
-			print_json();
-		} else print_json();
+			print_json(array('posts'=>$db->fetchAssocRows()));
+		} else print_json(array('posts'=>false));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'messages') {
+	try {
+		$db = new MySQL();
+		$db->query('SELECT * FROM campusflirt_messages WHERE receiver_id = '.$_SESSION['user_id'].' OR sender_id = '.$_SESSION['user_id']);
+		if (0 < $db->numRows()) {
+			header('Content-Type: application/json; charset=utf8');
+			print_json(array('messages'=>$db->fetchAssocRows()));
+		} else print_json(array('messages'=>false));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'feed') {
+	try {
+		$db = new MySQL();
+		$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$_SESSION['campus'].'\'');
+		if (0 < $db->numRows()) {
+			header('Content-Type: application/json; charset=utf8');
+			print_json(array('feed'=>$db->fetchAssocRows()));
+		} else print_json(array('feed'=>false));
+	} catch(Exception $e) {
+		echo $e->getMessage();
+		exit();
+	}
+} elseif ($ACTION == 'browse') {
+	try {
+		$db = new MySQL();
+		if (!check($CAMPUS)) {
+			$db->query('SELECT * FROM campusflirt_posts');
+		} else {
+			$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$CAMPUS.'\'');
+		}
+		if (0 < $db->numRows()) {
+			header('Content-Type: application/json; charset=utf8');
+			print_json(array('browse'=>$db->fetchAssocRows()));
+		} else print_json(array('browse'=>false));
 	} catch(Exception $e) {
 		echo $e->getMessage();
 		exit();

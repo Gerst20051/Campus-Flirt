@@ -79,8 +79,10 @@ color:#a39c82;
 }
 
 .gendersymbols {
+float:left;
 font-size:26pt;
 font-weight:bold;
+margin-left:-120px;
 }
 
 .boygender {
@@ -178,11 +180,6 @@ padding:20px;
 
 .postWrapper { min-height:100px; }
 
-.gendersymbols {
-float:left;
-margin-left:-120px;
-}
-
 .posthead {
 font-weight:bold;
 margin:8px 0;
@@ -204,7 +201,7 @@ padding:10px 0;
 margin:8px 0;
 }
 
-.postcampus {
+.postcampus-link {
 color:#665f46;
 }
 
@@ -469,17 +466,17 @@ width:250px;
 }
 
 .coolform input:focus {
-box-shadow:0 0 5px #007eff;
--khtml-box-shadow:0 0 5px #007eff;
--moz-box-shadow:0 0 5px #007eff;
--webkit-box-shadow:0 0 5px #007eff;
+box-shadow:0 0 5px #007eff !important;
+-khtml-box-shadow:0 0 5px #007eff !important;
+-moz-box-shadow:0 0 5px #007eff !important;
+-webkit-box-shadow:0 0 5px #007eff !important;
 }
 
 .coolform input.error {
-box-shadow:0 0 5px #ff4848;
--khtml-box-shadow:0 0 5px #ff4848;
--moz-box-shadow:0 0 5px #ff4848;
--webkit-box-shadow:0 0 5px #ff4848;
+box-shadow:0 0 5px #ff4848 !important;
+-khtml-box-shadow:0 0 5px #ff4848 !important;
+-moz-box-shadow:0 0 5px #ff4848 !important;
+-webkit-box-shadow:0 0 5px #ff4848 !important;
 }
 
 #reg_gender {
