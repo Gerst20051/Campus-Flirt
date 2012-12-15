@@ -212,7 +212,7 @@ if ($ACTION == 'logged') {
 } elseif ($ACTION == 'feed') {
 	try {
 		$db = new MySQL();
-		$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$_SESSION['campus'].'\'');
+		$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.$_SESSION['campus'].'\' ORDER BY timestamp DESC');
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');
 			print_json(array('data'=>$db->fetchAssocRows()));
@@ -225,9 +225,9 @@ if ($ACTION == 'logged') {
 	try {
 		$db = new MySQL();
 		if (!check($CAMPUS)) {
-			$db->query('SELECT * FROM campusflirt_posts');
+			$db->query('SELECT * FROM campusflirt_posts ORDER BY timestamp DESC');
 		} else {
-			$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.mysql_real_escape_string($CAMPUS).'\'');
+			$db->query('SELECT * FROM campusflirt_posts WHERE campus = \''.mysql_real_escape_string($CAMPUS).'\' ORDER BY timestamp DESC');
 		}
 		if (0 < $db->numRows()) {
 			header('Content-Type: application/json; charset=utf8');

@@ -8,7 +8,7 @@
 		g = window.navigator.userAgent,
 		h = g.indexOf("Firefox") !== -1 || g.indexOf("Opera") !== -1 ? true : false,
 		i = ["base.css","style.css","http://code.jquery.com/ui/1.9.2/themes/mint-choc/jquery-ui.css","jquery-ui-timepicker.css"],
-		j = ["http://code.jquery.com/jquery.min.js","http://code.jquery.com/ui/1.9.2/jquery-ui.min.js","jquery-ui-timepicker.js","jquery-ui-slider.js","functions.js","script.js"],
+		j = ["http://code.jquery.com/jquery.min.js","http://platform.twitter.com/widgets.js","https://apis.google.com/js/plusone.js","http://connect.facebook.net/en_US/all.js#xfbml=1&appId=105754722866948","http://code.jquery.com/ui/1.9.2/jquery-ui.min.js","jquery-ui-timepicker.js","jquery-ui-slider.js","functions.js","script.js"],
 		l = 0,
 		n,
 		m;

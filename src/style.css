@@ -499,3 +499,7 @@ display:inline-block;
 font-size:13px;
 margin-left:-6px;
 }
+
+#fblike > span {
+height:24px !important;
+}
