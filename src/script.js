@@ -1,13 +1,18 @@
-window.$ && main() || (function(){
-	var j = document.createElement("script");
-	j.setAttribute("type","text/javascript");
-	j.setAttribute("src","jquery.js");
-	j.onload = main;
-	j.onreadystatechange = function(){
-		if (this.readyState == "complete" || this.readyState == "loaded") main();
+window.$ && main() || !function(){
+	var s = document.createElement("script"), h = document.head || document.getElementsByTagName("head")[0] || document.documentElement, done = false;
+	s.src = "jquery.js";
+	s.onload = s.onreadystatechange = function(){
+		if (!this.readyState || this.readyState == "complete" || this.readyState == "loaded") {
+			if (!done && (done=true)) {
+				main();
+				s.onload = s.onreadystatechange = null;
+				if (h && s.parentNode) h.removeChild(s);
+				s = undefined;
+			}
+		}
 	};
-	(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(j);
-})();
+	h.insertBefore(s, h.firstChild);
+}();
 
 function main(){
 if (main.run) return;
@@ -176,7 +181,8 @@ register: function(){
 	});
 },
 registered: function(){
-	alert("An activation link has been sent to your email.");
+	alert("An activation link has been sent to your email (not really). You may now login.");
+	$("#b_login").click();
 },
 checkEmail: function(email){
 	email = $.trim(email);
@@ -278,13 +284,13 @@ addPosts: function(data){
 		s += 'hey <span class="postgender">';
 		if (v.theirgender == "Male") s += 'boy';
 		else s += 'girl';
-		s += '</span> in <span class="postlocation">'+v.location+'</span> around ';
+		s += '</span> in <span class="postlocation">'+stripSlashes(v.location)+'</span> around ';
 		s += timeordate;
 		s += '</div>';
-		s += '<div class="postbody">'+v.message+'</div>';
+		s += '<div class="postbody">'+stripSlashes(v.message)+'</div>';
 		s += '<div class="postalias">';
 		if (action == "browse") s += '<span class="postcampus-link link">'+v.campus.toUpperCase()+'</span> ';
-		s += '- <span class="alias">'+v.alias+'</span></div>';
+		s += '- <span class="alias">'+stripSlashes(v.alias)+'</span></div>';
 		s += '<div class="postactions">';
 		s += '<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>';
 		s += '</div>';
@@ -354,11 +360,11 @@ addPreviewPosts: function(data){
 		s += 'hey <span class="postgender">';
 		if (v.theirgender == "Male") s += 'boy';
 		else s += 'girl';
-		s += '</span> in <span class="postlocation">'+v.location+'</span> around ';
+		s += '</span> in <span class="postlocation">'+stripSlashes(v.location)+'</span> around ';
 		s += timeordate;
 		s += '</div>';
-		s += '<div class="postbody">'+v.message+'</div>';
-		s += '<div class="postalias"><span class="postcampus">'+v.campus.toUpperCase()+'</span> - <span class="alias">'+v.alias+'</span></div>';
+		s += '<div class="postbody">'+stripSlashes(v.message)+'</div>';
+		s += '<div class="postalias"><span class="postcampus">'+v.campus.toUpperCase()+'</span> - <span class="alias">'+stripSlashes(v.alias)+'</span></div>';
 		s += '</div>';
 		s += '</li>';
 	});
