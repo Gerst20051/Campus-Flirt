@@ -235,6 +235,14 @@ function hasModifier(){
 	return !!((this.ctrlKey || this.altKey) || this.shiftKey);
 }
 
+function bind(fnThis, fn){
+	var args = Array.prototype.slice.call(arguments, 2);
+	return function(){
+		if (0 < args.length) arguments = args;
+		return fn.apply(fnThis, arguments);
+	};
+}
+
 (function(){
 	window._gaq=[['_setAccount','UA-37052695-1'],['_trackPageview']];
 	var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;
