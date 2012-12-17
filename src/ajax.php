@@ -221,7 +221,7 @@ if ($ACTION == 'logged') {
 		echo $e->getMessage();
 		exit();
 	}
-} elseif ($ACTION == 'browse') {
+} elseif ($ACTION == 'global') {
 	try {
 		$db = new MySQL();
 		if (!check($CAMPUS)) {

@@ -19,7 +19,7 @@ if (main.run) return;
 else main.run = true;
 
 window.aC = {
-title: "HnS Campus Flirt",
+title: "Campus Flirt",
 ajaxurl: "ajax.php",
 loaded: false,
 logged: false,
@@ -27,7 +27,7 @@ loginFocus: false,
 registerFocus: false,
 currentPanel: "",
 moreUpdates: false, // change to true
-panels: ['post','myposts','messages','campusfeed','browse'],
+panels: ['post','myposts','messages','campusfeed','global'],
 user: {},
 previewFeed: [],
 previewFeedIndex: 0,
@@ -80,7 +80,7 @@ loggedIn: function(){
 			self.handleHash();
 			if (self.currentPanel === "") self.setPanel("campusfeed");
 			self.loadCampusFeed();
-			self.loadBrowse();
+			self.loadGlobal();
 			self.loadMyPosts();
 			self.loadMessages();
 			self.previewFeed = [];
@@ -206,7 +206,7 @@ onKeyDown: function(e){
 onWindowScroll: function(){
 	if (this.moreUpdates) {
 		if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-			// load more updates when campus feed or browse is active
+			// load more updates when campus feed or global feed is active
 		}
 	}
 },
@@ -248,7 +248,7 @@ addNewPost: function(){
 	
 },
 addPosts: function(data){
-	var s = '', action = "browse",
+	var s = '', action = "global",
 		boy = '<span class="boygender">b</span>',
 		girl = '<span class="girlgender">g</span>';
 	
@@ -289,7 +289,7 @@ addPosts: function(data){
 		s += '</div>';
 		s += '<div class="postbody">'+stripSlashes(v.message)+'</div>';
 		s += '<div class="postalias">';
-		if (action == "browse") s += '<span class="postcampus-link link">'+v.campus.toUpperCase()+'</span> ';
+		if (action == "global") s += '<span class="postcampus-link link">'+v.campus.toUpperCase()+'</span> ';
 		s += '- <span class="alias">'+stripSlashes(v.alias)+'</span></div>';
 		s += '<div class="postactions">';
 		s += '<span class="commentaction-link link">comment</span> - <span class="messageaction-link link">message</span> - <span class="reportaction-link link">report</span>';
@@ -308,9 +308,9 @@ loadCampusFeed: function(){
 		}
 	});
 },
-loadBrowse: function(){
+loadGlobal: function(){
 	var self = this;
-	$.getJSON(this.ajaxurl, {action:"browse"}, function(response){
+	$.getJSON(this.ajaxurl, {action:"global"}, function(response){
 		if (response.data !== false) {
 			var s = self.addPosts(response.data);
 			$("#globalfeedlist").append(s);
@@ -434,8 +434,8 @@ dom: function(){
 	$(".campusfeed-link").live('click',function(){
 		self.setPanel('campusfeed');
 	});
-	$(".browse-link").live('click',function(){
-		self.setPanel('browse');
+	$(".global-link").live('click',function(){
+		self.setPanel('global');
 	});
 	$(".logout-link").live('click',function(){
 		self.logout();
