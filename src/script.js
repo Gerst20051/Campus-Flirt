@@ -1,4 +1,4 @@
-window.$ && main() || !function(){
+window.jQuery && main() || !function(){
 	var s = document.createElement("script"), h = document.head || document.getElementsByTagName("head")[0] || document.documentElement, done = false;
 	s.src = "jquery.js";
 	s.onload = s.onreadystatechange = function(){
@@ -215,7 +215,7 @@ postFlirt: function(){
 		alias = $("#postflirt_alias"),
 		location = $("#postflirt_location"),
 		datetime = $("#postflirt_datetime"),
-		gender = $("#postflirt_gender :radio:checked"),
+		gender = $("#postflirt_gender input:radio:checked"),
 		message = $("#postflirt_message");
 	
 	if ($.trim(alias.val()) == "") { alias.addClass('error'); e = true; } else alias.removeClass('error');
@@ -230,13 +230,13 @@ postFlirt: function(){
 		$.map(inputs, function(n, i){
 			output[n.name] = $.trim($(n).val());
 		});
-		output.gender = $("#postflirt_gender :radio:checked").val();
+		output.gender = $("#postflirt_gender input:radio:checked").val();
 		$.post(this.ajaxurl, {action:"postflirt",form:output}, function(response){
 			$("#f_postflirt").find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.posted)) {
 				$("#f_postflirt").find("input.error").removeClass('error').end().clearForm();
 				$("#f_postflirt #postflirt_datetime").datepicker("setDate", null);
-				$("#f_postflirt #postflirt_gender :radio").attr("checked", false).button("refresh");
+				$("#f_postflirt #postflirt_gender input:radio").attr("checked", false).button("refresh");
 				// prepend post to campus feed and global feed (or will it load it automatically)
 			} else {
 				$("#b_postflirt").addClass('error');
