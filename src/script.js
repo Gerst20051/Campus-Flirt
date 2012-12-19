@@ -1,4 +1,5 @@
-window.jQuery && main() || !function(){
+(function(window, document, $, undefined){
+$ && main() || !function(){
 	var s = document.createElement("script"), h = document.head || document.getElementsByTagName("head")[0] || document.documentElement, done = false;
 	s.src = "jquery.js";
 	s.onload = s.onreadystatechange = function(){
@@ -85,8 +86,8 @@ loggedIn: function(){
 			self.loadMessages();
 			self.previewFeed = [];
 			$("#previewfeedlist").empty();
-			if (0 < self.previewFeedIntervalId) {
-				window.clearInterval(previewFeedIntervalId);
+			if (self.previewFeedIntervalId) {
+				window.clearInterval(self.previewFeedIntervalId);
 				self.previewFeedIntervalId = 0;
 			}
 		} else aC.logout();
@@ -101,27 +102,27 @@ loggedOut: function(){
 	$(".campusheading").empty();
 },
 login: function(){
-	var self = this, e = false, email = $("#lemail"), password = $("#lpassword");
-	if ($.trim(email.val()) == "") { email.addClass('error'); e = true; } else email.removeClass('error');
-	if ($.trim(password.val()) == "") { password.addClass('error'); e = true; } else password.removeClass('error');
+	var self = this, e = false, $login = $("#f_login"), $email = $login.find("#lemail"), $password = $login.find("#lpassword");
+	if ($.trim($email.val()) == "") { $email.addClass('error'); e = true; } else $email.removeClass('error');
+	if ($.trim($password.val()) == "") { $password.addClass('error'); e = true; } else $password.removeClass('error');
 	if (!e) {
-		$("#f_login").find("input,select").attr('disabled',true);
-		var output = {}, inputs = $("#f_login").find("input").filter("[name]");
+		$login.find("input,select").attr('disabled',true);
+		var output = {}, inputs = $login.find("input").filter("[name]");
 		$.map(inputs, function(n, i){
 			output[n.name] = $.trim($(n).val());
 		});
 		$.post(this.ajaxurl, {action:"login",form:output}, function(response){
-			$("#f_login").find("input,select").attr('disabled',false);
+			$login.find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.logged)) {
-				$("#reg_name, #reg_email, #reg_password").removeClass('error');
-				$("#b_login_splash").removeClass('error');
+				$login.find("#reg_name, #reg_email, #reg_password").removeClass('error');
+				$login.find("#b_login_splash").removeClass('error');
 				$("#f_register").clearForm();
-				$("#f_login").clearForm();
+				$login.clearForm();
 				self.logged = true;
 				self.loggedIn();
 			} else {
-				$("#b_login_splash").addClass('error');
-				$("#lpassword").val('');
+				$login.find("#b_login_splash").addClass('error');
+				$password.val('');
 			}
 		});
 	}
@@ -139,24 +140,25 @@ logout: function(){
 },
 regValidate: function(){
 	var e = false,
-	name = $("#reg_name"), name_trim = $.trim(name.val()),
-	email = $("#reg_email"), email_trim = $.trim(email.val()),
-	password = $("#reg_password"), password_trim = $.trim(password.val()),
-	gender = $("#reg_gender"), gender_trim = $.trim(gender.val()),
+	$reg = $("#f_register"),
+	$name = $reg.find("#reg_name"), name_trim = $.trim($name.val()),
+	$email = $reg.find("#reg_email"), email_trim = $.trim($email.val()),
+	$password = $reg.find("#reg_password"), password_trim = $.trim($password.val()),
+	$gender = $reg.find("#reg_gender"), gender_trim = $.trim($gender.val()),
 	nameReg = /[A-Za-z'-]/,
 	emailReg = /^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}?$/i,
 	eduEmailReg = /^[^@  ]+@([a-zA-Z0-9\-]+\.)+([a-zA-Z0-9\-]{2}|edu)\$/;
 
-	if (name_trim == "") { name.addClass('error'); e = true; }
-	else if (!nameReg.test(name_trim)) { name.addClass('error'); e = true; }
-	else if (name_trim.split(' ').length < 2) { name.addClass('error'); e = true; } else name.removeClass('error');
+	if (name_trim == "") { $name.addClass('error'); e = true; }
+	else if (!nameReg.test(name_trim)) { $name.addClass('error'); e = true; }
+	else if (name_trim.split(' ').length < 2) { $name.addClass('error'); e = true; } else $name.removeClass('error');
 
-	if (email_trim == "") { email.addClass('error'); e = true; }
-	else if (!emailReg.test(email_trim)) { email.addClass('error'); e = true; }
-	else if (!strrchr(email_trim, ".") === ".edu") { alert("not"); email.addClass('error'); e = true; }
-	else { this.checkEmail(email_trim); if (email.hasClass('error')) e = true; }
+	if (email_trim == "") { $email.addClass('error'); e = true; }
+	else if (!emailReg.test(email_trim)) { $email.addClass('error'); e = true; }
+	else if (!strrchr(email_trim, ".") === ".edu") { alert("not"); $email.addClass('error'); e = true; }
+	else { this.checkEmail(email_trim); if ($email.hasClass('error')) e = true; }
 	
-	if (password_trim == "") { password.addClass('error'); e = true; } else password.removeClass('error');
+	if (password_trim == "") { $password.addClass('error'); e = true; } else $password.removeClass('error');
 	
 	if (gender_trim == "0") { e = true; }
 	
@@ -164,19 +166,19 @@ regValidate: function(){
 },
 register: function(){
 	if (!this.regValidate()) return;
-	$("#f_register").find("input,select").attr('disabled',true);
-	var self = this, output = {}, inputs = $("#f_register").find("input,select").filter("[name]");
+	var self = this, output = {}, $f_register = $("#f_register"), inputs = $f_register.find("input,select").filter("[name]");
+	$f_register.find("input,select").attr('disabled',true);
 	$.map(inputs, function(n, i){
 		output[n.name] = $.trim($(n).val());
 	});
 	$.post(aC.ajaxurl, {action:"register",form:output}, function(response){
-		$("#f_register").find("input,select").attr('disabled',false);
+		$f_register.find("input,select").attr('disabled',false);
 		if (stringToBoolean(response.registered)) {
-			$("#b_register").removeClass('error');
-			$("#f_register").clearForm();
+			$f_register.find("#b_register").removeClass('error');
+			$f_register.clearForm();
 			self.registered();
 		} else {
-			$("#b_register").addClass('error');
+			$f_register.find("#b_register").addClass('error');
 		}
 	});
 },
@@ -212,34 +214,36 @@ onWindowScroll: function(){
 },
 postFlirt: function(){
 	var self = this, e = false,
-		alias = $("#postflirt_alias"),
-		location = $("#postflirt_location"),
-		datetime = $("#postflirt_datetime"),
-		gender = $("#postflirt_gender input:radio:checked"),
-		message = $("#postflirt_message");
+		$f_postflirt = $("#f_postflirt");
+		$alias = $f_postflirt.find("#postflirt_alias"),
+		$location = $f_postflirt.find("#postflirt_location"),
+		$datetime = $f_postflirt.find("#postflirt_datetime"),
+		$gender = $f_postflirt.find("#postflirt_gender").find("input:radio"),
+		$gender_checked = gender.find(":checked"),
+		$message = $f_postflirt.find("#postflirt_message");
 	
-	if ($.trim(alias.val()) == "") { alias.addClass('error'); e = true; } else alias.removeClass('error');
-	if ($.trim(location.val()) == "") { location.addClass('error'); e = true; } else location.removeClass('error');
-	if ($.trim(datetime.val()) == "") { datetime.addClass('error'); e = true; } else datetime.removeClass('error');
-	if ($.trim(message.val()) == "") { message.addClass('error'); e = true; } else message.removeClass('error');
-	if (typeof gender.val() == "undefined") { e = true; }
+	if ($.trim($alias.val()) == "") { $alias.addClass('error'); e = true; } else $alias.removeClass('error');
+	if ($.trim($location.val()) == "") { $location.addClass('error'); e = true; } else $location.removeClass('error');
+	if ($.trim($datetime.val()) == "") { $datetime.addClass('error'); e = true; } else $datetime.removeClass('error');
+	if ($.trim($message.val()) == "") { $message.addClass('error'); e = true; } else $message.removeClass('error');
+	if (typeof $gender_checked.val() == "undefined") { e = true; }
 	
 	if (!e) {
-		$("#f_postflirt").find("input,select").attr('disabled',true);
-		var output = {}, inputs = $("#f_postflirt").find("input").not(":radio").filter("[name]");
+		$f_postflirt.find("input,select").attr('disabled',true);
+		var output = {}, inputs = $f_postflirt.find("input").not(":radio").filter("[name]");
 		$.map(inputs, function(n, i){
 			output[n.name] = $.trim($(n).val());
 		});
-		output.gender = $("#postflirt_gender input:radio:checked").val();
+		output.gender = $gender_checked.val();
 		$.post(this.ajaxurl, {action:"postflirt",form:output}, function(response){
-			$("#f_postflirt").find("input,select").attr('disabled',false);
+			$f_postflirt.find("input,select").attr('disabled',false);
 			if (stringToBoolean(response.posted)) {
-				$("#f_postflirt").find("input.error").removeClass('error').end().clearForm();
-				$("#f_postflirt #postflirt_datetime").datepicker("setDate", null);
-				$("#f_postflirt #postflirt_gender input:radio").attr("checked", false).button("refresh");
+				$f_postflirt.find("input.error").removeClass('error').end().clearForm();
+				$datetime.datepicker("setDate", null);
+				$gender.attr("checked", false).button("refresh");
 				// prepend post to campus feed and global feed (or will it load it automatically)
 			} else {
-				$("#b_postflirt").addClass('error');
+				$f_postflirt.find("#b_postflirt").addClass('error');
 			}
 		});
 	}
@@ -253,16 +257,20 @@ addPosts: function(data){
 		girl = '<span class="girlgender">g</span>';
 	
 	$.each(data,function(i,v){
-		var datetime = new Date(parseInt(v.timespotted+'000',10)), hours = datetime.getHours(), prefix = "AM", minutes = datetime.getMinutes(), seconds = datetime.getSeconds();
+		var datetime = new Date(parseInt(v.timespotted+'000',10)),
+			hours = datetime.getHours(),
+			prefix = "AM",
+			minutes = datetime.getMinutes(),
+			seconds = datetime.getSeconds();
 		if (hours > 12) { hours = hours - 12; prefix = "PM"; }
 		else if (hours == 0) hours = 12;
 		if (minutes < 10) { minutes = '0'+minutes; }
-		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-		var monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
-		var dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-		var dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-		var time = hours + ":" + minutes + " " + prefix;
-		var timeordate = '';
+		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'],
+			monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
+			dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+			dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+			time = hours + ":" + minutes + " " + prefix,
+			timeordate = '';
 		if (today(datetime)) {
 			timeordate = '<span class="posttime">'+time+'</span>';
 		} else if (yesterday(datetime)) {
@@ -336,16 +344,20 @@ loadMessages: function(){
 addPreviewPosts: function(data){
 	var s = '';
 	$.each(data,function(i,v){
-		var datetime = new Date(parseInt(v.timespotted+'000',10)), hours = datetime.getHours(), prefix = "AM", minutes = datetime.getMinutes(), seconds = datetime.getSeconds();
+		var datetime = new Date(parseInt(v.timespotted+'000',10)),
+			hours = datetime.getHours(),
+			prefix = "AM",
+			minutes = datetime.getMinutes(),
+			seconds = datetime.getSeconds();
 		if (hours > 12) { hours = hours - 12; prefix = "PM"; }
 		else if (hours == 0) hours = 12;
 		if (minutes < 10) { minutes = '0'+minutes; }
-		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-		var monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
-		var dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-		var dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-		var time = hours + ":" + minutes + " " + prefix;
-		var timeordate = '';
+		var monthArray = ['January','February','March','April','May','June','July','August','September','October','November','December'],
+			monthShortArray = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'],
+			dayArray = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+			dayShortArray = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+			time = hours + ":" + minutes + " " + prefix,
+			timeordate = '';
 		if (today(datetime)) {
 			timeordate = '<span class="posttime">'+time+'</span>';
 		} else if (yesterday(datetime)) {
@@ -381,78 +393,89 @@ loadPreviewFeed: function(){
 	});
 },
 handlePreviewFeed: function(){
-	if (0 < $("#previewfeedlist").children().length) {
+	var $previewfeedlist = $("#previewfeedlist");
+	if ($previewfeedlist.children().length) {
 		var s = this.addPreviewPosts(this.previewFeed.slice(this.previewFeedIndex++,this.previewFeedIndex));
-		$("#previewfeedlist").children("li:first").slideUp(800,function(){ $(this).remove(); });
-		$("#previewfeedlist").children("li:last").slideDown(800,function(){ $("#previewfeedlist").append(s); });
+		$previewfeedlist.children("li").first().slideUp(800,function(){ $(this).remove(); });
+		$previewfeedlist.children("li").last().slideDown(800,function(){ $previewfeedlist.append(s); });
 		if (this.previewFeedIndex === this.previewFeed.length) this.previewFeedIndex = 0;
 	} else {
 		var s = this.addPreviewPosts(this.previewFeed.slice(0,4));
-		$("#previewfeedlist").append(s);
+		$previewfeedlist.append(s);
 		this.previewFeedIndex = 4;
 	}
 },
 dom: function(){
 	var self = this;
-	$("#lemail, #lpassword").live('focus',function(){
-		self.loginFocus = true;
-	}).live('blur',function(){
-		self.loginFocus = false;
-	});
-	$("#b_login_splash").live('click',function(){
+	$(document).on({
+		focus: function(){
+			console.log("focus");
+			self.loginFocus = true;
+		},
+		blur: function(){
+			console.log("blur");
+			self.loginFocus = false;
+		}
+	},'#lemail, #lpassword');
+	$(document).on('click','#b_login_splash',function(){
 		self.login();
 	});
-	$("#b_register_splash").live('click',function(){
+	$(document).on('click','#b_register_splash',function(){
 		$("#register").show();
 		$("#login").hide();
 	});
-	$("#reg_name, #reg_email, #reg_password").live('focus',function(){
-		self.registerFocus = true;
-	}).live('blur',function(){
-		self.registerFocus = false;
-	});
-	$("#reg_email").live('blur',function(){
+	$(document).on({
+		focus: function(){
+			console.log("focus");
+			self.registerFocus = true;
+		},
+		blur: function(){
+			console.log("blur");
+			self.registerFocus = false;
+		}
+	},'#reg_name, #reg_email, #reg_password');
+	$(document).on('blur','#reg_email',function(){
 		self.checkEmail(this.value);
 	});
-	$("#b_register").live('click',function(){
+	$(document).on('click','#b_register',function(){
 		self.register();
 	});
-	$("#b_login").live('click',function(){
+	$(document).on('click','#b_login',function(){
 		$("#login").show();
 		$("#register").hide();
 	});
-	$(".post-link").live('click',function(){
+	$(document).on('click','.post-link',function(){
 		self.setPanel('post');
 	});
-	$(".myposts-link").live('click',function(){
+	$(document).on('click','.myposts-link',function(){
 		self.setPanel('myposts');
 		self.loadMyPosts();
 	});
-	$(".messages-link").live('click',function(){
+	$(document).on('click','.messages-link',function(){
 		self.setPanel('messages');
 	});
-	$(".campusfeed-link").live('click',function(){
+	$(document).on('click','.campusfeed-link',function(){
 		self.setPanel('campusfeed');
 	});
-	$(".global-link").live('click',function(){
+	$(document).on('click','.global-link',function(){
 		self.setPanel('global');
 	});
-	$(".logout-link").live('click',function(){
+	$(document).on('click','.logout-link',function(){
 		self.logout();
 	});
-	$(".postcampus-link").live('click',function(){
+	$(document).on('click','.postcampus-link',function(){
 		
 	});
-	$(".commentaction-link").live('click',function(){
+	$(document).on('click','.commentaction-link',function(){
 		
 	});
-	$(".messageaction-link").live('click',function(){
+	$(document).on('click','.messageaction-link',function(){
 		
 	});
-	$(".reportaction-link").live('click',function(){
+	$(document).on('click','.reportaction-link',function(){
 		
 	});
-	$("#b_postflirt").live('click',function(){
+	$(document).on('click','#b_postflirt',function(){
 		self.postFlirt();
 	});
 }
@@ -464,3 +487,4 @@ $(document).ready(function(){window.aC.init()});
 
 return true;
 }
+})(this, this.document, this.jQuery);
