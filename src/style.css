@@ -13,6 +13,11 @@ user-select:none;
 -webkit-user-select:none;
 }
 
+img.logo {
+height:0;
+width:0;
+}
+
 #main {
 margin:0 auto;
 width:650px;
