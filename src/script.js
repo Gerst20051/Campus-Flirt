@@ -157,11 +157,11 @@ regValidate: function(){
 	else if (!emailReg.test(email_trim)) { $email.addClass('error'); e = true; }
 	else if (!strrchr(email_trim, ".") === ".edu") { alert("not"); $email.addClass('error'); e = true; }
 	else { this.checkEmail(email_trim); if ($email.hasClass('error')) e = true; }
-	
+
 	if (password_trim == "") { $password.addClass('error'); e = true; } else $password.removeClass('error');
-	
+
 	if (gender_trim == "0") { e = true; }
-	
+
 	return !e;
 },
 register: function(){
@@ -219,15 +219,15 @@ postFlirt: function(){
 		$location = $f_postflirt.find("#postflirt_location"),
 		$datetime = $f_postflirt.find("#postflirt_datetime"),
 		$gender = $f_postflirt.find("#postflirt_gender").find("input:radio"),
-		$gender_checked = gender.find(":checked"),
+		$gender_checked = $gender.filter(":checked"),
 		$message = $f_postflirt.find("#postflirt_message");
-	
+
 	if ($.trim($alias.val()) == "") { $alias.addClass('error'); e = true; } else $alias.removeClass('error');
 	if ($.trim($location.val()) == "") { $location.addClass('error'); e = true; } else $location.removeClass('error');
 	if ($.trim($datetime.val()) == "") { $datetime.addClass('error'); e = true; } else $datetime.removeClass('error');
 	if ($.trim($message.val()) == "") { $message.addClass('error'); e = true; } else $message.removeClass('error');
 	if (typeof $gender_checked.val() == "undefined") { e = true; }
-	
+
 	if (!e) {
 		$f_postflirt.find("input,select").attr('disabled',true);
 		var output = {}, inputs = $f_postflirt.find("input").not(":radio").filter("[name]");
@@ -249,13 +249,13 @@ postFlirt: function(){
 	}
 },
 addNewPost: function(){
-	
+
 },
 addPosts: function(data){
 	var s = '', action = "global",
 		boy = '<span class="boygender">b</span>',
 		girl = '<span class="girlgender">g</span>';
-	
+
 	$.each(data,function(i,v){
 		var datetime = new Date(parseInt(v.timespotted+'000',10)),
 			hours = datetime.getHours(),
@@ -288,7 +288,7 @@ addPosts: function(data){
 		if (v.theirgender == "Male") s += boy;
 		else s += girl;
 		s += '</div>';
-		s += '<div class="posthead">';		
+		s += '<div class="posthead">';
 		s += 'hey <span class="postgender">';
 		if (v.theirgender == "Male") s += 'boy';
 		else s += 'girl';
@@ -464,16 +464,16 @@ dom: function(){
 		self.logout();
 	});
 	$(document).on('click','.postcampus-link',function(){
-		
+
 	});
 	$(document).on('click','.commentaction-link',function(){
-		
+
 	});
 	$(document).on('click','.messageaction-link',function(){
-		
+
 	});
 	$(document).on('click','.reportaction-link',function(){
-		
+
 	});
 	$(document).on('click','#b_postflirt',function(){
 		self.postFlirt();
